@@ -1,0 +1,12 @@
+.custom-dropdown-menu {
+    color: #fff
+}
+
+.ant-menu-item-selected {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+.ant-menu-item:active,
+.ant-menu-submenu-title:active {
+    background-color: transparent !important;
+}

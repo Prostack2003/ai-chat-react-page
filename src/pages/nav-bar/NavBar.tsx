@@ -3,6 +3,7 @@ import { Button, Col, Dropdown, Layout, Menu, MenuProps, Row, Space } from 'antd
 import logo from '../../shared/images/logo.svg';
 import { DownOutlined } from "@ant-design/icons";
 import './style.css';
+import {Link} from "react-router-dom";
 
 const { Header } = Layout;
 
@@ -28,7 +29,10 @@ const NavBar = () => {
             <Header>
                 <Row justify="space-between" align="middle">
                     <Col>
-                        <img src={logo} alt="logo" style={{ height: '32px', marginRight: '16px', verticalAlign: -10 }} />
+                        <Link to='/'>
+                            <img src={logo} alt="logo"
+                                 style={{height: '32px', marginRight: '16px', verticalAlign: -10}}/>
+                        </Link>
                     </Col>
                     <Col flex="auto">
                         <Menu theme="dark" mode="horizontal">
@@ -42,14 +46,11 @@ const NavBar = () => {
                                     </a>
                                 </Dropdown>
                             </Menu.Item>
-                            <Menu.Item key="packages">
-                                <a className="custom-dropdown-menu">Пакеты</a>
-                            </Menu.Item>
-                            <Menu.Item key="api">
-                                <a className="custom-dropdown-menu">API</a>
+                            <Menu.Item key="chat">
+                                <Link to='/chat' className="custom-dropdown-menu">Чат</Link>
                             </Menu.Item>
                             <Menu.Item key="blog">
-                                <a className="custom-dropdown-menu">Блог</a>
+                                <Link to='/blog' className="custom-dropdown-menu">Блог</Link>
                             </Menu.Item>
                         </Menu>
                     </Col>

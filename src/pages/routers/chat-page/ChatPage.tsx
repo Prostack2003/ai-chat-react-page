@@ -1,48 +1,13 @@
-import React, { useState } from "react";
-import { Button, Input, Layout } from "antd";
-import './ChatPage.css';
+import React from 'react';
+import useMessages from '../../../api/messages';
 import avatar from '../../../shared/images/avatar.svg';
-import { Configuration, OpenAIApi, ChatCompletionRequestMessageRoleEnum } from "openai-edge";
+import './ChatPage.css';
+import { Button, Layout, Input } from 'antd';
 
-interface Message {
-    text: string;
-    sender: 'user' | 'bot';
-}
+const { Search } = Input;
 
-const ChatPage: React.FC = () => {
-    const { Search } = Input;
-
-    const [messages, setMessages] = useState<Message[]>([]);
-    const [input, setInput] = useState<string>('');
-
-    const configuration = new Configuration({
-        apiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGE2ZTgxLTRiMDMtNGQxNC1hMGQxLWI3N2RkZjlkMDY2ZiIsImlzRGV2ZWxvcGVyIjp0cnVlLCJpYXQiOjE3MjA1Mjk0NDgsImV4cCI6MjAzNjEwNTQ0OH0.Dm8QJpXfX2ChWcYZ5c0SLNzGpmEmh1dYPAMW3wz4v5M',
-        basePath: 'https://bothub.chat/api/v2/openai/v1',
-    });
-    const openai = new OpenAIApi(configuration);
-
-    const onSearch = async (value: string) => {
-        if (value.trim() ) {
-            const newMessage: Message = { text: value, sender: 'user' };
-            setMessages(prevMessages => [...prevMessages, newMessage]);
-            setInput('');
-
-            try {
-                const completion = await openai.createChatCompletion({
-                    messages: [
-                        ...messages.map(msg => ({ role: msg.sender === 'user' ? ChatCompletionRequestMessageRoleEnum.User : ChatCompletionRequestMessageRoleEnum.Assistant, content: msg.text })),
-                        { role: ChatCompletionRequestMessageRoleEnum.User, content: value }
-                    ],
-                    model: 'gemini-pro',
-                });
-                const botMessageContent = (await completion.json()).choices[0].message.content;
-                const botMessage: Message = { text: botMessageContent, sender: 'bot' };
-                setMessages(prevMessages => [...prevMessages, botMessage]);
-            } catch (error) {
-                console.error('Ошибка отправления сообщения:', error);
-            }
-        }
-    };
+const ChatComponent: React.FC = () => {
+    const { messages, input, setInput, onSearch } = useMessages();
 
     return (
         <Layout style={{
@@ -75,10 +40,10 @@ const ChatPage: React.FC = () => {
                     ))}
                 </div>
                 <Search
-                    placeholder="Спросите о чём-нибудь меня"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onSearch={onSearch}
+                    placeholder="Спросите о чём-нибудь меня"
                     enterButton
                 />
             </div>
@@ -86,4 +51,4 @@ const ChatPage: React.FC = () => {
     );
 };
 
-export default ChatPage;
+export default ChatComponent;

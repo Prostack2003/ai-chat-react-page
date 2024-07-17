@@ -22,7 +22,7 @@ const ChatPage: React.FC = () => {
     const openai = new OpenAIApi(configuration);
 
     const onSearch = async (value: string) => {
-        if (value.trim()) {
+        if (value.trim() ) {
             const newMessage: Message = { text: value, sender: 'user' };
             setMessages(prevMessages => [...prevMessages, newMessage]);
             setInput('');
